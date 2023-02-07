@@ -1,0 +1,10 @@
+
+
+
+Construção ambiente EC2
+
+1 - Provisionar as maquinas - OK
+2 - Configurar security groups
+3 - Acessar via SSH
+4 - Testar Elastic Ips
+5 - Criar maquinas em diferentes zonas de disponibilidade
