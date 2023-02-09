@@ -3,9 +3,9 @@ provider "aws" {
 }
 
 backend "s3" {
-  bucket = "ec2_config_state"
-  region = "us-east-1"
-  key = "ec2_config_tfstate"
+  bucket  = "ec2_config_state"
+  region  = "us-east-1"
+  key     = "ec2_config_tfstate"
   encrypt = true
 }
 
