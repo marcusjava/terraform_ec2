@@ -1,4 +1,4 @@
-resource "aws_instance" "development" {
+/* resource "aws_instance" "development" {
   count                  = var.quantity
   ami                    = var.ami
   instance_type          = var.instance_type
@@ -9,7 +9,7 @@ resource "aws_instance" "development" {
   }
 
 }
-
+ */
 
 resource "aws_dynamodb_table" "dynamodb-table" {
   name         = "GameScores"

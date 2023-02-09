@@ -7,4 +7,5 @@ Construção ambiente EC2
 2 - Configurar security groups - OK
 3 - Acessar via SSH - OK
 4 - Testar Elastic Ips
-5 - Criar maquinas em diferentes zonas de disponibilidade
+5 - Criar VPCs
+6 - Criar maquinas em diferentes zonas de disponibilidade
