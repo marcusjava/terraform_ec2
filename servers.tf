@@ -1,17 +1,32 @@
-/* resource "aws_instance" "development" {
+resource "aws_instance" "public_machines" {
   count                  = var.quantity
   ami                    = var.ami
   instance_type          = var.instance_type
   key_name               = var.key
   vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_https.id, aws_security_group.allow_http.id]
+  subnet_id              = aws_subnet.public_subnets[count.index].id
   tags = {
-    Name = "development_${count.index}"
+    Name = "Public_${count.index}"
   }
 
-}
- */
+} 
 
-resource "aws_dynamodb_table" "dynamodb-table" {
+
+resource "aws_instance" "private_machines" {
+  count                  = var.quantity
+  ami                    = var.ami
+  instance_type          = var.instance_type
+  key_name               = var.key
+  vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_https.id, aws_security_group.allow_http.id]
+  subnet_id              = aws_subnet.private_subnets[count.index].id
+  tags = {
+    Name = "Private_${count.index}"
+  }
+
+} 
+ 
+
+/* resource "aws_dynamodb_table" "dynamodb-table" {
   name         = "GameScores"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "UserId"
@@ -60,4 +75,4 @@ resource "aws_instance" "development_with_bucket" {
     Name = "development_with_bucket"
   }
 
-}
+} */
