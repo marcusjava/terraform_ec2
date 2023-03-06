@@ -45,11 +45,7 @@ resource "aws_subnet" "public_subnets" {
   }
 
 }
-resource "aws_route_table_association" "public_subnet_association" {
-  count          = length(var.public_subnets_cidrs)
-  subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
-  route_table_id = aws_route_table.second_route.id
-}
+
 
 resource "aws_subnet" "private_subnets" {
   count             = length(var.private_subnets_cidrs)
@@ -62,3 +58,10 @@ resource "aws_subnet" "private_subnets" {
   }
 
 }
+
+resource "aws_route_table_association" "public_subnet_association" {
+  count          = length(var.public_subnets_cidrs)
+  subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
+  route_table_id = aws_route_table.second_route.id
+}
+
