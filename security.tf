@@ -1,7 +1,7 @@
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
   description = "Allow inbound traffic for port 22"
-  vpc_id = aws_vpc.main.id
+  vpc_id      = aws_vpc.my_vpc.id
   ingress {
     protocol    = "tcp"
     from_port   = 22
@@ -18,7 +18,7 @@ resource "aws_security_group" "allow_ssh" {
 resource "aws_security_group" "allow_https" {
   name        = "allow_https"
   description = "Allow inbound traffic for port 443"
-  vpc_id = aws_vpc.main.id
+  vpc_id      = aws_vpc.my_vpc.id
   ingress {
     protocol    = "tcp"
     from_port   = 443
@@ -41,7 +41,7 @@ resource "aws_security_group" "allow_https" {
 resource "aws_security_group" "allow_http" {
   name        = "allow_http"
   description = "Allow HTTP inbound traffic on port 80"
-  vpc_id = aws_vpc.main.id
+  vpc_id      = aws_vpc.my_vpc.id
   ingress {
     protocol    = "tcp"
     from_port   = 80

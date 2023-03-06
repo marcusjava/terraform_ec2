@@ -1,67 +1,66 @@
-
-
-resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
+resource "aws_vpc" "my_vpc" {
+  cidr_block           = "172.17.0.0/16"
   enable_dns_hostnames = true
-  enable_dns_support = true
+  enable_dns_support   = true
 
   tags = {
-    Name = "MyNetwork"
+    Name = "my_vpc"
   }
+
 }
 
+
+resource "aws_subnet" "my_public_subnets" {
+  count                   = length(var.public_subnets_cidrs)
+  vpc_id                  = aws_vpc.my_vpc.id
+  cidr_block              = var.public_subnets_cidrs[count.index]
+  map_public_ip_on_launch = true
+  availability_zone       = var.zones[count.index]
+  tags = {
+    Name = "Public subnet on ${var.zones[count.index]}"
+  }
+}
 
 resource "aws_internet_gateway" "ig" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.my_vpc.id
   tags = {
-    Name = "MyNetwork Internet Gateway"
-  }
-
-}
-
-
-resource "aws_route_table" "second_route" {
-  vpc_id = aws_vpc.main.id
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.ig.id
-  }
-  tags = {
-
-    Name = "2nd Route Table"
-
+    Name = "Internet gateway"
   }
 }
 
 
-resource "aws_subnet" "public_subnets" {
-  count             = length(var.public_subnets_cidrs)
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = element(var.public_subnets_cidrs, count.index)
-  availability_zone = element(var.zones, count.index)
+resource "aws_route_table" "public_route_table" {
+  vpc_id = aws_vpc.my_vpc.id
 
   tags = {
-    Name = "Public Subnet ${count.index}"
+    Name = "Public route table"
   }
-
 }
 
 
-resource "aws_subnet" "private_subnets" {
-  count             = length(var.private_subnets_cidrs)
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = element(var.private_subnets_cidrs, count.index)
-  availability_zone = element(var.zones, count.index)
-
-  tags = {
-    Name = "Private Subnet ${count.index}"
-  }
+resource "aws_route" "public_route" {
+  route_table_id         = aws_route_table.public_route_table.id
+  gateway_id             = aws_internet_gateway.ig.id
+  destination_cidr_block = "0.0.0.0/0"
 
 }
 
-resource "aws_route_table_association" "public_subnet_association" {
+resource "aws_route_table_association" "publics_association" {
   count          = length(var.public_subnets_cidrs)
-  subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
-  route_table_id = aws_route_table.second_route.id
+  route_table_id = aws_route_table.public_route_table.id
+  subnet_id      = aws_subnet.my_public_subnets[count.index].id
 }
 
+
+
+
+resource "aws_subnet" "my_private_subnets" {
+  count                   = length(var.private_subnets_cidrs)
+  vpc_id                  = aws_vpc.my_vpc.id
+  cidr_block              = var.private_subnets_cidrs[count.index]
+  map_public_ip_on_launch = true
+  availability_zone       = var.zones[count.index]
+  tags = {
+    Name = "Private subnet on ${var.zones[count.index]}"
+  }
+}

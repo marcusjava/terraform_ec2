@@ -1,6 +1,8 @@
-/* resource "aws_instance" "public_machines" {
+/*
+
+resource "aws_instance" "public_machines" {
   count                  = var.quantity
-  ami                    = var.ami
+  ami                    = data.aws_ami.ubuntu_ami
   instance_type          = var.instance_type
   key_name               = var.key
   vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_https.id, aws_security_group.allow_http.id]
@@ -10,6 +12,8 @@
   }
 
 } 
+
+
 
 
 resource "aws_instance" "private_machines" {
@@ -24,7 +28,7 @@ resource "aws_instance" "private_machines" {
   }
 
 }  */
- 
+
 
 /* resource "aws_dynamodb_table" "dynamodb-table" {
   name         = "GameScores"
