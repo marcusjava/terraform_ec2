@@ -1,4 +1,4 @@
-/*
+
 
 resource "aws_instance" "public_machines" {
   count                  = var.quantity
@@ -27,7 +27,7 @@ resource "aws_instance" "private_machines" {
     Name = "Private_${count.index}"
   }
 
-}  */
+}  
 
 
 /* resource "aws_dynamodb_table" "dynamodb-table" {

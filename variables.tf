@@ -1,6 +1,7 @@
 variable "quantity" {
   type        = string
   description = "Machine quantity"
+  default = "3"
 }
 
 variable "ami" {
