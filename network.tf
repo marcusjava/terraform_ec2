@@ -10,7 +10,7 @@ resource "aws_vpc" "my_vpc" {
 }
 
 
-resource "aws_subnet" "my_public_subnets" {
+resource "aws_subnet" "public_subnets" {
   count                   = length(var.public_subnets_cidrs)
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = var.public_subnets_cidrs[count.index]
@@ -48,18 +48,18 @@ resource "aws_route" "public_route" {
 resource "aws_route_table_association" "publics_association" {
   count          = length(var.public_subnets_cidrs)
   route_table_id = aws_route_table.public_route_table.id
-  subnet_id      = element(aws_subnet.my_public_subnets[*].id, count.index)
+  subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
 }
 
 
 
 
-resource "aws_subnet" "my_private_subnets" {
+resource "aws_subnet" "private_subnets" {
   count                   = length(var.private_subnets_cidrs)
   vpc_id                  = aws_vpc.my_vpc.id
-  cidr_block              = var.private_subnets_cidrs[count.index]
+  cidr_block              = element(var.private_subnets_cidrs, count.index)
   map_public_ip_on_launch = true
-  availability_zone       = var.zones[count.index]
+  availability_zone       = element(var.zones, count.index)
   tags = {
     Name = "Private subnet on ${var.zones[count.index]}"
   }
