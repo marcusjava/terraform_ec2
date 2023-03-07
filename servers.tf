@@ -2,11 +2,11 @@
 
 resource "aws_instance" "public_machines" {
   count                  = var.quantity
-  ami                    = data.aws_ami.ubuntu_ami
+  ami                    = data.aws_ami.ubuntu_ami.id
   instance_type          = var.instance_type
   key_name               = var.key
   vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_https.id, aws_security_group.allow_http.id]
-  subnet_id              = aws_subnet.public_subnets[count.index].id
+  subnet_id              = element(aws_subnet.public_subnets[*].id, count.index)
   tags = {
     Name = "Public_${count.index}"
   }
@@ -18,11 +18,11 @@ resource "aws_instance" "public_machines" {
 
 resource "aws_instance" "private_machines" {
   count                  = var.quantity
-  ami                    = var.ami
+  ami                    = data.aws_ami.ubuntu_ami.id
   instance_type          = var.instance_type
   key_name               = var.key
   vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_https.id, aws_security_group.allow_http.id]
-  subnet_id              = aws_subnet.private_subnets[count.index].id
+  subnet_id              = element(aws_subnet.private_subnets[*].id, count.index)
   tags = {
     Name = "Private_${count.index}"
   }
