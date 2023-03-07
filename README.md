@@ -7,6 +7,13 @@
 
 ### Projeto terraform para provisionar infraestrutura na AWS criando os seguintes recursos:
 
+- 1 VPC
+- 3 Zonas de disponibilidade
+- 3 Subnets publicas
+- 3 Subnets privadas
+- 1 Internet Gateway
+- 1 Route table
+
 ## 1 - Iniciar projeto.
 
 ```sh
